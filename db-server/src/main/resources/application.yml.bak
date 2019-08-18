@@ -1,0 +1,21 @@
+server:
+  port: 3001
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+  instance:
+    lease-expiration-duration-in-seconds: 30
+    lease-renewal-interval-in-seconds: 10
+spring:
+  application:
+    name: consumer-hello
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+  datasource:
+      url: jdbc:mysql://127.0.0.1:3306/library
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
+
