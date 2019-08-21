@@ -2,10 +2,13 @@ package com.rh.service;
 
 import com.rh.mapper.StockMapper;
 import com.rh.model.Stock;
+import com.rh.model.StockHistory;
 import com.rh.model.User;
 import com.rh.model.UserAuths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class StockService {
@@ -33,5 +36,27 @@ public class StockService {
 
     public void updateStockCurentCount(Stock stock) {
         stockMapper.updateStockCurrentCount(stock);
+    }
+
+    public List<Stock> getStocksByUserId(int userId) {
+        Stock stock = new Stock();
+        stock.setUser_id(userId);
+        return stockMapper.getStocksByUserId(stock);
+    };
+
+    public List<StockHistory> getStockHistoryByUserId(int userId) {
+        StockHistory history = new StockHistory();
+        history.setUser_id(userId);
+        return stockMapper.getStockHistorysByUserId(history);
+    }
+
+    public List<StockHistory> getStockHistoryByStockId(int stockId) {
+        StockHistory history = new StockHistory();
+        history.setStock_id(stockId);
+        return stockMapper.getStockHistorysByStockId(history);
+    }
+
+    public void addStockHistory(StockHistory history) {
+        stockMapper.addStockHistory(history);
     }
 }

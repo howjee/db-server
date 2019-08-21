@@ -1,10 +1,7 @@
 package com.rh.mapper;
 
 import com.rh.basemapper.MyMapper;
-import com.rh.model.Book;
-import com.rh.model.Stock;
-import com.rh.model.User;
-import com.rh.model.UserAuths;
+import com.rh.model.*;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -31,4 +28,20 @@ public interface StockMapper extends MyMapper<UserAuths> {
 
     @Update("update stocks set current_count = #{current_count} where id = #{id}")
     void updateStockCurrentCount(Stock stock);
+
+    @Select("select * from stocks where user_id = #{user_id}")
+    List<Stock> getStocksByUserId(Stock stock);
+
+    @Select("select * from stock_history where stock_id = #{stock_id}")
+    List<StockHistory> getStockHistorysByStockId(StockHistory stockHistory);
+
+    @Select("select * from stock_history where user_id = #{user_id}")
+    List<StockHistory> getStockHistorysByUserId(StockHistory stockHistory);
+
+    @Insert("insert into stock_history(user_id, stock_id, operate_type, buy_price, " +
+            "sell_price, sell_count, remain_count, sell_mode, profit_rate, profit, " +
+            "buy_time, sell_time) values (#{user_id}, #{stock_id}, #{operate_type}, " +
+            "#{buy_price}, #{sell_price}, #{sell_count}, #{remain_count}, #{sell_mode}, " +
+            "#{profit_rate}, #{profit}, #{buy_time}, #{sell_time})")
+    void addStockHistory(StockHistory stockHistory);
 }
