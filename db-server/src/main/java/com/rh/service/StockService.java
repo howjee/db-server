@@ -25,6 +25,8 @@ public class StockService {
         return stockMapper.getUser(user).get(0);
     }
 
+    public void updateUserMoney(User user) { stockMapper.updateUserMoney(user); }
+
     public void insetStock(Stock stock) {
         stockMapper.addStocks(stock);
     }

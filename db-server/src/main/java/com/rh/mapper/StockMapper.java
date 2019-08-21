@@ -22,6 +22,9 @@ public interface StockMapper extends MyMapper<UserAuths> {
     @Select("select * from users where id = #{id}")
     List<User> getUser (User user);
 
+    @Update("update users set money = #{money} where id = #{id}")
+    void updateUserMoney (User user);
+
     @Insert("insert into stocks(user_id, stock_number, stock_name, stock_price, strategy_mode, strategy_rate, margin, stop_loss_rate, stop_profit_rate, open_fee,\n" +
             "     delay_fee, auto_delay, current_count) values(#{user_id}, #{stock_number}, #{stock_name}, #{stock_price}, #{strategy_mode}, #{strategy_rate}, #{margin}, #{stop_loss_rate}, #{stop_profit_rate}, #{open_fee}, #{delay_fee}, #{auto_delay}, #{current_count})")
     void addStocks (Stock stock);

@@ -10,6 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+
 @RestController
 public class StockController {
 
@@ -34,6 +38,48 @@ public class StockController {
         }
     }
 
+    @RequestMapping(value = "/stock/info/{id}", method = RequestMethod.GET)
+    public String getStockInfo(@PathVariable  String id) {
+
+        String url = "http://hq.sinajs.cn/list="+ id;
+        String result;
+        try {
+            URL u = new URL(url);
+            byte[] b = new byte[256];
+            InputStream in = null;
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            {
+                try {
+                    in = u.openStream();
+                    int i;
+                    while ((i = in.read(b)) != -1) {
+                        bo.write(b, 0, i);
+                    }
+                    result = bo.toString();
+                    bo.reset();
+                    //String[] stocks = result.split(";");
+                    //for (String stock : stocks) {
+                    //    String[] datas = stock.split(",");
+                        //System.out.println(datas);
+                   // }
+
+                } catch (Exception e) {
+                    result = "get stock real-time infomation error, " + e.getMessage();
+                    logger.error(result);
+                } finally {
+                    if (in != null) {
+                        in.close();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            result = "get stock real-time infomation error, " + e.getMessage();
+            logger.error(result);
+        }
+
+        return result;
+    }
+
     @RequestMapping(value = "/stock", method = RequestMethod.POST)
     public String insetStock(@RequestBody Stock stock) {
         String res = "success";
@@ -55,6 +101,19 @@ public class StockController {
         } catch (Exception e) {
             res = "failure";
             logger.error("updateStockCurentCount error , ", e);
+        } finally {
+            return res;
+        }
+    }
+
+    @RequestMapping(value = "/stock/update_user_money", method = RequestMethod.POST)
+    public String updateUserMoney(@RequestBody User user) {
+        String res = "success";
+        try {
+            stockService.updateUserMoney(user);
+        } catch (Exception e) {
+            res = "failure";
+            logger.error("updateUserMoney error , ", e);
         } finally {
             return res;
         }
