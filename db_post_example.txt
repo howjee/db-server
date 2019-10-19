@@ -1,0 +1,195 @@
+post header:
+"Content-Type":"application/json"
+=========================localhost:3001/stock
+{
+"user_id":3,
+"stock_number":"000063",
+"stock_name":"中兴通讯",
+"stock_price":28.19,
+"strategy_mode":0,
+"strategy_rate":8,
+"margin":500,
+"stop_loss_rate":33.83,
+"stop_profit_rate":26.22,
+"open_fee":7.2,
+"delay_fee":15,
+"auto_delay":1,
+"current_count":100
+}
+========================localhost:3001/stock/update_current_count
+{
+"id":1,
+"current_count":502019-08-18 23:12:31
+}
+==============
+{
+"user_id":2,
+"stock_id":1,
+"operate_type":1,
+"buy_price":30.9,
+"sell_price":90.0,
+"sell_count":100,
+"remain_count":20,
+"sell_mode":1,
+"profit_rate":4.2,
+"profit":20000,
+"buy_time":"2019-08-18 23:12:31",
+"sell_time":"2019-08-18 23:12:31"
+}
+
+===========================localhost:3001/config/new========post
+{
+	"name":"保证金类型",
+	"body":"1,2,3,4,5"
+}
+=======
+{
+	"name":"法定节假日",
+	"body":"{2019:[0101,0501]}"
+}
+==========================localhost:3001/config/update====post
+{
+	"name":"法定节假日",
+	"body":"{2019:[0101,0501]},{2010:[0101,0602]}"
+}
+==========================localhost:3001/config/delete====post
+法定节假日
+==========================localhost:3001/config/all=======get
+===响应示例
+[
+    {
+        "id": 1,
+        "name": "保证金类型",
+        "body": "1,2,3,4,5",
+        "update_time": "2019-10-05 12:47:34"
+    },
+    {
+        "id": 3,
+        "name": "法定节假日",
+        "body": "{2019:[0101,0501]},{2010:[0101,0602]}",
+        "update_time": "2019-10-05 13:06:42"
+    }
+]
+
+=========================localhost:3001/article/new======post
+{
+	"title":"我爱中华人民共和国",
+	"body":"我爱中华人民共和国"
+}
+===
+{
+	"title":"我爱中华人民共和国2",
+	"body":"我爱中华人民共和国2"
+}
+=========================localhost:3001/article/update_body======post
+{
+	"title":"我爱中华人民共和国2",
+	"body":"我爱中华人民共和国,祖国，你好。"
+}
+=========================localhost:3001/article/delete=======post
+我爱中华人民共和国2
+=========================localhost:3001/article/all_titles===get
+====响应示例：
+[
+    "我爱中华人民共和国",
+    "我爱中华人民共和国2"
+]
+=========================localhost:3001/article/body===post
+我爱中华人民共和国2
+===============================响应示例：
+我爱中华人民共和国,祖国，你好。
+
+=========================localhost:3001/KCBStock/new===post
+{
+	"name":"华山",
+	"number":"09dd0",
+	"inuse":1
+}
+===
+{
+	"name":"大秦铁路",
+	"number":"09920",
+	"inuse":1
+}
+=======================localhost:3001/KCBStock/update_inuse===post
+{
+	"name":"华山",
+	"inuse":0
+}
+=======================localhost:3001/KCBStock/delete===post
+华山
+=======================localhost:3001/KCBStock/all===get
+====响应示例：
+[
+    {
+        "name": "大秦铁路",
+        "number": "09920",
+        "inuse": true,
+        "update_time": "2019-10-05 13:32:26"
+    },
+    {
+        "name": "华山",
+        "number": "09dd0",
+        "inuse": true,
+        "update_time": "2019-10-05 13:38:04"
+    }
+]
+
+
+=======================localhost:3001/KCBStock/numbers===get
+====响应示例：
+09920 09dd0
+
+======================localhost:3001/user/money/phone/13888888888 =====get
+====响应示例：
+50000
+
+======================localhost:3001/stock/update_stock_stop_loss   ======post
+{
+"id":1,
+"stop_loss_rate":5.0
+}
+======================localhost:3001/stock/update_stock_stop_profit ======post
+{
+"id":1,
+"top_profit_rate":5.0
+}
+
+
+======================localhost:3001/stock/set_order_done ======post
+{
+"id":1
+}
+
+=====================localhost:3001/stock/money  ==== post
+{
+"user_id":3,
+"stock_number":"000063",
+"status":1
+}
+
+=====================localhost:3001/user/login ==== post
+{
+"identity_type":"phone",
+"identifier":"13888888888",
+"credential":"xxxxx"
+}
+
+==========响应示例：
+eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwiaWF0IjoxNTcxMDY1NjE2LCJzdWIiOiLmhZXlrrnpm6rmnZEiLCJpc3MiOiLmhZXlrrnpm6rmnZEiLCJleHAiOjE1NzEwNjkyMTZ9.6zSD8PZXVMK6sBZX92mjhp9TWRV-fk2i9PbCi9AMa6E
+
+====================localhost:3001/user/info  ==== get
+请求头部增加：
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwiaWF0IjoxNTcxMDY1NjE2LCJzdWIiOiLmhZXlrrnpm6rmnZEiLCJpc3MiOiLmhZXlrrnpm6rmnZEiLCJleHAiOjE1NzEwNjkyMTZ9.6zSD8PZXVMK6sBZX92mjhp9TWRV-fk2i9PbCi9AMa6E
+
+====================localhost:3001/user/recharge  ==== post
+请求头部增加：
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwiaWF0IjoxNTcxMDY1NjE2LCJzdWIiOiLmhZXlrrnpm6rmnZEiLCJpc3MiOiLmhZXlrrnpm6rmnZEiLCJleHAiOjE1NzEwNjkyMTZ9.6zSD8PZXVMK6sBZX92mjhp9TWRV-fk2i9PbCi9AMa6E
+====
+111
+
+====================localhost:3001/user/withdraw ====post
+请求头部增加：
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxIiwiaWF0IjoxNTcxMDY1NjE2LCJzdWIiOiLmhZXlrrnpm6rmnZEiLCJpc3MiOiLmhZXlrrnpm6rmnZEiLCJleHAiOjE1NzEwNjkyMTZ9.6zSD8PZXVMK6sBZX92mjhp9TWRV-fk2i9PbCi9AMa6E
+====
+110

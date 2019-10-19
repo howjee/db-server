@@ -1,0 +1,145 @@
+users
+　　|id|nickname|avatar|
+　　|1|慕容雪村|http://…/avatar.jpg|
+　　|2|魔力鸟|http://…/avatar2.jpg|
+　　|3|科比|http://…/avatar3.jpg|
+user_auths
+　　|id|user_id|identity_type|identifier|credential|
+　　|1|1|email|123@example.com|password_hash(密码)|
+　　|2|1|phone|13888888888|password_hash(密码)|
+　　|3|1|weibo|微博UID|微博access_token|
+　　|4|2|username|moliniao|password_hash(密码)|
+　　|5|3|weixin|微信UserName|微信token|
+
+insert into users(id, nickname, avatar, money) values(1, "慕容雪村","http://…/avatar.jpg", 5000),(2, "魔力鸟","http://…/avatar2.jpg",10000), (3, "科比", NULL, 8000);
+insert into user_auths values(1, 1, "email", "123@example.com","xxxx"),(2,1,"phone", "13888888888", "xxxxx"), (3,1,"weibo", "23fdfasd", "xxx");
+insert into user_auths values(4, 2, "username", "moliniao", "xxxx");
+insert into user_auths values(5, 3, "weixin", "summerjdk", "xxxx");
+
+insert into stocks(user_id, stock_number, stock_name, stock_price, strategy_mode, strategy_rate, margin, stop_loss_rate, stop_profit_rate, open_fee,
+     delay_fee, auto_delay, current_count) values(1, "000063", "中兴通讯", 28.19, 0, 8, 500, 33.83, 26.22, 7.20, 15, 1, 100);
+
+insert into stocks(user_id, stock_number, stock_name, stock_price, strategy_mode, strategy_rate, margin, stop_loss_rate, stop_profit_rate, open_fee,
+     delay_fee, auto_delay, current_count) values(1, "601006", "大秦铁路", 28.19, 0, 8, 500, 33.83, 26.22, 7.20, 15, 1, 100);
+
+update stocks set current_count=400 where id=1;
+
+insert into stock_history(user_id, stock_id, operate_type, buy_price, sell_price, sell_count, remain_count, sell_mode, profit_rate, profit, buy_time, sell_time)
+     values(1, 1, 0, 28.19, 0, 0, 500, 0, 0, 0, "2019-08-18 23:12:31", NULL);
+================================================================================
+create table users(
+  id int NOT NULL AUTO_INCREMENT,
+  nickname varchar(255) NOT NULL,
+  avatar varchar(255),
+  money double default 0.0,
+  permission int NOT NULL default 0 comment "0:普通用户,1:管理员, 2,超级用户",
+  create_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  unique index k_nickname (nickname)
+);
+
+create table user_auths(
+  id int NOT NULL AUTO_INCREMENT,
+  user_id int NOT NULL,
+  identity_type varchar(64) NOT NULL,
+  identifier varchar(255) NOT NULL,
+  credential text COLLATE utf8_bin,
+  update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  index k_user_id (user_id),
+  unique index k_identifier (identifier)
+);
+
+create table orders(
+  id int NOT NULL AUTO_INCREMENT,
+  user_id int NOT NULL,
+  stock_number varchar(255) NOT NULL,
+  stock_name varchar(255) NOT NULL,
+  stock_price float NOT NULL,
+  strategy_mode int NOT NULL comment "0:1天免息,1:5天免息,2:10天免息,3:单周,4:双周,5:月息",
+  strategy_rate float NOT NULL,
+  margin float NOT NULL,
+  stop_loss_rate float NOT NULL,
+  stop_profit_rate float NOT NULL,
+  open_fee float NOT NULL,
+  delay_fee float NOT NULL,
+  auto_delay boolean default 1,
+  current_count int NOT NULL,
+  create_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  is_valid boolean default 1,
+  status int default 0,
+  PRIMARY KEY (id),
+  index k_user_id (user_id)
+);
+
+create table order_history(
+  id int NOT NULL AUTO_INCREMENT,
+  user_id int NOT NULL,
+  stock_id int NOT NULL,
+  operate_type int default 0 comment "0: buy, 1: sell",
+  buy_price float NOT NULL,
+  sell_price float NOT NULL,
+  sell_count int NOT NULL,
+  remain_count int NOT NULL,
+  sell_mode int NOT NULL,
+  profit_rate float NOT NULL,
+  profit float NOT NULL,
+  buy_time datetime NOT NULL,
+  sell_time datetime,
+  PRIMARY KEY (id),
+  index k_user_id (user_id)
+);
+
+create table money_history(
+  id int NOT NULL AUTO_INCREMENT,
+  user_id int NOT NULL,
+  type int NOT NULL comment "0:充值,1:提现,2:保证金,3:递延费,4:建仓费,5:盈利分红,6:系统赠送金额",
+  value double NOT NULL,
+  remain double NOT NULL,
+  create_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  detail text,
+  PRIMARY KEY (id),
+  index k_user_id (user_id)
+); 
+
+create table KCB_stocks(
+  name varchar(255) NOT NULL,
+  number varchar(255) NOT NULL,
+  inuse tinyint(1) NOT NULL default 1,
+  update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (number)
+);
+
+create table articles(
+  title varchar(255) NOT NULL,
+  body text,
+  update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (title)
+);
+
+create table configs(
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  body text NOT NULL,
+  update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+create table url_permission(
+  URI varchar(255) NOT NULL,
+  permission int NOT NULL default 0 comment "0:普通用户,1:管理员, 2,超级用户",
+  PRIMARY KEY (URI)
+);
+
+insert into url_permission(URI, permission) values("register", 0);
+
+1.查询单只股票委托加已成交后总交易额。
+2.融资标识 存所有科创板股票信息（名称 代码 时间 状态 操作状态）（新增 删除 查询） 查询所有代码。
+3.配置设置（保证金类别 法定节假日）。
+4.文章 标题。
+5.14.40扣除递延费。
+6.人账户token 有多钱 。
+7.更改止损止盈
+

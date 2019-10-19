@@ -1,0 +1,91 @@
+账号信息：
+13599545170
+李泽
+880110
+
+=============
+github
+https://github.com/howjee/db-server
+617263736@qq.com
+renhang198913
+
+================
+用户基础信息表 users
+id    
+nickname
+avatar  （头像）
+
+
+用户授权信息表 user_auths：
+id
+user_id
+identity_type 登录类型（手机号 邮箱 用户名）或第三方应用名称（微信 微博等）
+identifier 标识（手机号 邮箱 用户名或第三方应用的唯一标识）
+credential 密码凭证（站内的保存密码，站外的不保存或保存token）
+
+
+用户表：--user
+id primary key
+phone unique  （长度固定）
+password text  (加密)
+name text  (可以重复)
+money
+
+create table 
+=========
+primary key: id
+secondary index：phone
+
+股票信息表：stock
+user_id
+stock_id
+stock_name
+stock_price
+mode
+margin
+strategy_rate
+stop_loss_rate
+stop_profit_rate
+open_fee
+delay_fee
+auto_delay
+current_count
+create_time
+update_time
+====
+primary key: user_id,stock_id
+secondary index: user_id
+
+股票交易历史信息：stock_history
+user_id
+stock_id
+operate_type  (买，卖)
+buy_price
+sell_price
+sell_count
+remain_count
+sell_mode
+profit_rate
+profit
+buy_time
+sell_time
+====
+primary key: user_id,stock_id
+secondary index: user_id
+
+
+资金明细： money_history
+id auto inc primary key
+create_time
+type
+usage
+remain
+
+
+
+
+
+
+
+
+
