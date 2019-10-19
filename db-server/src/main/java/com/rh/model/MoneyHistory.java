@@ -5,13 +5,28 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Date;
 
 public class MoneyHistory {
+    public enum Type{
+        RECHARGE(0), WITHDRAW(1), MARGIN(2), DELAY_FEE(3), OPEN_FEE(4), PROFIT(5), PRESENT(6);
+        private int value;
+
+        // 构造方法
+        private Type(int val) {
+            this.value = val;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    };
+
     private int id;
     private int user_id;
     private int type;
-    private float value;
-    private float remain;
+    private double value;
+    private double remain;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date create_time;
+    private String detail;
 
     public int getId() {
         return id;
@@ -37,19 +52,19 @@ public class MoneyHistory {
         this.type = type;
     }
 
-    public float getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(float value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
-    public float getRemain() {
+    public double getRemain() {
         return remain;
     }
 
-    public void setRemain(float remain) {
+    public void setRemain(double remain) {
         this.remain = remain;
     }
 
@@ -59,5 +74,13 @@ public class MoneyHistory {
 
     public void setCreate_time(Date create_time) {
         this.create_time = create_time;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }
