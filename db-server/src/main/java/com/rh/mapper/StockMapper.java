@@ -139,6 +139,9 @@ public interface StockMapper extends MyMapper<UserAuths> {
     @Select("select title from articles")
     List<String> selectArticleTitles();
 
+    @Select("select title,left(body,50) as body from articles")
+    List<Article> selectArticles();
+
     @Select("select body from articles where title = #{title}")
     String selectArticleBodyByTitle(Article article);
 

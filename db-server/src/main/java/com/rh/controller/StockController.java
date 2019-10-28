@@ -17,9 +17,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-import static com.rh.controller.util.StringUtils.*;
-import static java.lang.String.*;
-
 //@CrossOrigin(origins = "http://localhost:5556")
 //@CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
@@ -559,6 +556,23 @@ public class StockController {
     }
 
     @LoginRequired
+    @RequestMapping(value = "/article/all", method = RequestMethod.GET)
+    public List<Article> getAllArticles(@CurrentUser User user) {
+        if (user.getPermission() < User.Permission.MANAGER.getValue()) {
+            return null;
+        }
+
+        List<Article> articles = null;
+        try {
+            articles = stockService.selectArticles();
+        } catch (Exception e) {
+            logger.error("get all article titles error, ", e);
+        } finally {
+            return articles;
+        }
+    }
+
+    @LoginRequired
     @RequestMapping(value = "/article/body", method = RequestMethod.POST)
     public String getBodyOfTitle(@CurrentUser User user, @RequestBody String title) {
         if (user.getPermission() < User.Permission.MANAGER.getValue()) {
@@ -651,7 +665,7 @@ public class StockController {
     /*===========================================*/
     /* Other APIs */
     /*==========================================*/
-    @RequestMapping(value = "/suggest3/sinajs/cn/{list}", method = RequestMethod.GET)
+    @RequestMapping(value = "/suggest3/sinajs/cn/{list}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public String getStockDetail(@PathVariable String list) {
 
         String url = "http://suggest3.sinajs.cn/suggest/" + list;
@@ -696,7 +710,8 @@ public class StockController {
         return result;
     }
 
-    @RequestMapping(value = "/hq/sinajs/cn/{list}", method = RequestMethod.GET)
+    @RequestMapping(value = "/hq/sinajs/cn/{list}", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+    //@RequestMapping(value = "/hq/sinajs/cn/{list}", method = RequestMethod.GET)
     public String getStockInfo(@PathVariable String list) {
 
         String url = "http://hq.sinajs.cn/list=" + list;

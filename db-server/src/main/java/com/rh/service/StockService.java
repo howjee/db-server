@@ -348,6 +348,10 @@ public class StockService {
         return stockMapper.selectArticleTitles();
     }
 
+    public List<Article> selectArticles() {
+        return stockMapper.selectArticles();
+    }
+
     public String selectArticleBodyByTitle(String title) {
         Article article = new Article();
         article.setTitle(title);
